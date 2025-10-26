@@ -26,13 +26,37 @@ keys = ['key door A', 'key door B', 'key door C', 'key door D']
 ##############################################################################################
 ################## FUNCTIONS = ACTIONS  ######################################################
 ##############################################################################################
+#### the order of the main functions :
 
-#ACTION 0) define function : player_action(player_input)
+# 0) player_action
+### // can still input another action or repeat same one ####
+
+# 1) explore
+# // update_item_path(item) 
+# // return list of items in space
+
+# 2) examine
+# // return true  if key found
+# // return false if key not found and not in inventory
+# // return false if key in inventory
+# // return 
+
+# 3) unlock_door
+# // quiz
+# // update_door_path(door)
+
+# 4) navigate
+# // 
+# // update_space_path(space)
+
+################## PLAYER_ACTION(PLAYER_INPUT) MAIN FUNCTION ######################################################
+
+
 # While Loop, if else, break, return : player_action function
 def player_action(player_input: str):
     while player_input != 'quit' and player_input != 'restart': # While player_input is not 'quit' and 'restart'
-        print("\nChoose an actions :",actions) # Print the list of actions
-        action = input("PLAYER! Choose your action :").lower() # Player inputs space of choice
+        print("\Here is a list of actions :",actions) # Print the list of actions
+        action = input("PLAYER! Enter your action:").lower() # Player inputs space of choice
         if action in actions:
             return action
         elif action == 'quit': # Exit the function to restart the game
@@ -47,7 +71,7 @@ def player_action(player_input: str):
 
 
 
-################## FUNCTION EXPLORE  ######################################################
+################## PLAYER_INPUT = EXPLORE  ######################################################
 
 # define Function : explore(space)
 def explore(space: str):
@@ -57,7 +81,8 @@ def explore(space: str):
         print("-", item)
         space_items.append(item)
     return space_items
-################## FUNCTION EXAMINE  ######################################################
+
+################## PLAYER_INPUT = EXAMINE  ######################################################
 
 # define Function : examine
 def examine(space:str):
@@ -109,7 +134,8 @@ def examine(space:str):
 
         result=check(space, select_item, key)
         return result 
-################## FUNCTION CHECK(space, select_item, key)  ######################################################
+################## FUNCTION CHECK  ######################################################
+#check for key in selected item in current space
 # use this function inside examine()
 def check(space, select_item, key):
     #if found key and not in inventory then update inventory
@@ -129,19 +155,39 @@ def check(space, select_item, key):
 
 ################## PLAYER_INPUT = UNLOCK DOOR  ######################################################
 
+################## QUIZ FUNCTION  ######################################################
+def quiz(current_door):
+    # Quiz function to unlock doors
+    if (game_state.inventory in current_door):
+        print("This door is already unlocked ~ you can proceed!")
+        return player_action('play')
+    else:
+        print("Answer the following question to unlock the door:")
+        print("What is 7 + 6?")
+        answer = int(input("Your answer: "))
+        if answer == 13:
+            print("Correct! The door is now unlocked...")
+            game_state.inventory.append(current_door)
+            return True
+        else:
+            print("Incorrect answer. Try again!")
+            return quiz(current_door)
+    return player_action('play')
+# call function: quiz('door A')
 
+################## UNLOCK DOOR FUNCTION  ######################################################
 
 # define Function : unlock_door(action, door, inventory, current_space)
 def unlock_door(action: str, inventory: list, space: str):
     #player_input = 'navigate'
     #action = player_input
     
-    print('player chose to TRY UNLOCK A DOOR')
-
+    print('Player is navigating to a new space!')
+    space_doors = []
     while (action == 'navigate' and action != 'quit' and door != 'restart'): # While Loop
         if 'door A' in space:
             space ='game room'
-        space_doors = []
+        
         door = input(f'Choose from this list of doors in {space}: {space_doors}')
         if door in space:
         door = input("Enter the door you want to try unlock : ").lower() # Player inputs space of choice
@@ -153,10 +199,12 @@ def unlock_door(action: str, inventory: list, space: str):
                 print(f"This key is already in your inventory !")
                 return True
     update_door_path(door)
+    update_space_path(space)
+    return game_state['door_path']
 
 ################## PLAYER_INPUT = NAVIGATE  ######################################################
 
-def navigate(door:str):
+def navigate(door, inventory):
     print(f'Navigating through the {door}')
     return "You moved forward"
 
@@ -178,6 +226,13 @@ def update_game_state(door: str, key: str, item: str, space: str):
     return None
     
     
+################## RESTART FUNCTION ######################################################
+
+def restart(answer: bool):
+    print("Restarting the game...")
+    reset_game_state()
+    continue
+
 ################## PLAYER_INPUT = RESTART ######################################################
 
 def reset_game_state():
@@ -195,10 +250,7 @@ def reset_game_state():
 
     return game_state
 
-def restart(answer: bool):
-    print("Restarting the game...")
-    reset_game_state()
-    continue
+
 ################## PLAYER_INPUT = QUIT ######################################################
 
 def quit():
