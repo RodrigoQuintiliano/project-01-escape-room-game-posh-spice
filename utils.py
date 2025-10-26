@@ -217,6 +217,70 @@ def quiz(current_door):
     return player_action('play')
 # call function: quiz('door A')
 
+
+
+################## DOOR QUIZZES FUNCTIONs  ######################################################
+if door == 'door A':
+    
+
+def quiz('door A'):
+    print("Question: What is the primary function of Door A, as suggested by its location in the floor plan?")
+    print("A) To access the outdoors.")
+    print("B) To provide entry or exit to a specific room.")
+    print("C) To serve as a decorative element.")
+
+    answer = input("Enter your choice (A, B, or C): ").upper()
+
+    if answer == "B":
+        print("Correct! Door A is most likely for entering or exiting a room.")
+    else:
+        print("Incorrect. Try again!")
+
+
+
+def door_b_quiz():
+    print("Question: Considering the layout, which room is Door B most likely connected to?")
+    print("A) The Game Room")
+    print("B) Bedroom 1")
+    print("C) The Outdoors")
+
+    answer = input("Enter your choice (A, B, or C): ").upper()
+
+    if answer == "B":
+        print("Correct! Based on the plan, Door B likely leads to Bedroom 1.")
+    else:
+        print("Incorrect. Try again!")
+
+
+def door_c_quiz():
+    print("Question: If you wake up on the couch, and the key to Door C is found nearby, what is the most logical room Door C leads to, considering the floor plan?")
+    print("A) The Game Room")
+    print("B) Bedroom 2")
+    print("C) The Outdoors")
+
+    answer = input("Enter your choice (A, B, or C): ").upper()
+
+    if answer == "C":
+        print("Correct! It makes sense that Door C might lead outside.")
+    else:
+        print("Incorrect. Consider the layout again!")
+
+
+
+def door_d_quiz():
+    print("Question: Considering the floor plan, and the fact you woke up on the couch, where is Door D most likely located?")
+    print("A) In the Game Room")
+    print("B) In Bedroom 1")
+    print("C) Not visible on the plan")
+
+    answer = input("Enter your choice (A, B, or C): ").upper()
+
+    if answer == "C":
+        print("Correct! Since Door D isn't shown, it's not visible on the plan.")
+    else:
+        print("Incorrect. Maybe Door D is a secret door?")
+
+
 ################## PLAYER_INPUT = NAVIGATE  ######################################################
 print('Player is navigating to a new space!')
 
