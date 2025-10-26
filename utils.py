@@ -219,28 +219,31 @@ print('Player is navigating to a new space!')
 
 def navigate(space, door, inventory):
     print(f'Navigating through the {door}')
-    # space is new_space
-    while (action == 'unlock door' and action != 'quit' and action != 'restart'): # While loop
-        if ('door A' in space) and ('door B' not in space) and ('door C' not in space) and ('door D' not in space):
-            update_space_path('game room')
+    if door in game_paths[door_path] and space in spaces:
 
-        elif ('door A' in space) and ('door B' in space) and ('door C' in space) and ('door D' not in space):
-            update_space_path('bedroom 1')
+        # space is new_space
+        while (action == 'unlock door' and action != 'quit' and action != 'restart'): # While loop
+            if ('door A' in space) and ('door B' not in space) and ('door C' not in space) and ('door D' not in space):
+                update_space_path('game room')
+
+            elif ('door A' in space) and ('door B' in space) and ('door C' in space) and ('door D' not in space):
+                update_space_path('bedroom 1')
         
-        elif ('door A' not in space) and ('door B' in space) and ('door C' not in space) and ('door D' not in space):
-            update_space_path('bedroom 2')
+            elif ('door A' not in space) and ('door B' in space) and ('door C' not in space) and ('door D' not in space):
+                update_space_path('bedroom 2')
         
-        elif ('door A' not in space) and ('door B' not in space) and ('door C' in space) and ('door D' in space):
-            update_space_path('living room')
+            elif ('door A' not in space) and ('door B' not in space) and ('door C' in space) and ('door D' in space):
+                update_space_path('living room')
         
-        elif ('door A' not in space) and ('door B' not in space) and ('door C' not in space) and ('door D' in space):
-            update_space_path('outside')
-            print("FREEDOM | YOU WIN !")
-            print(game_state)
-            break
-        else:
-            ("UNKNOWN SPACE in the system?")
-        print(f'You are now in{space}')
+            elif ('door A' not in space) and ('door B' not in space) and ('door C' not in space) and ('door D' in space):
+                update_space_path('outside')
+                print("FREEDOM | YOU WIN !")
+                print(game_state)
+                break
+            else:
+                ("UNKNOWN SPACE in the system?")
+            print(f'You are now in{space}')
+
 
 
 
@@ -271,17 +274,18 @@ def restart(answer: bool):
 ################## PLAYER_INPUT = RESTART ######################################################
 
 def reset_game_state():
-    answer = input("Do you want to restart the game?")
-    if answer.low() == 'yes':
-        game_state["space_path"].append('game room')
-        game_state["item_path"].clear()
-        game_state["inventory"].clear()
-        game_state["door_path"].clear()
-    elif answer.low() == 'no':
-        player_action('play')
-    else:
-        print("Enter answer YES or NO")
-        reset_game_state()
+    answer = input("Do you want to restart the game?").low()
+    while answer !='YES' and answer!='NO':
+        answer = input("To restart Enter only : YES or No").low()
+        if answer.low() == 'yes':
+            game_state["space_path"].append('game room')
+            game_state["item_path"].clear()
+            game_state["inventory"].clear()
+            game_state["door_path"].clear()
+        elif answer.low() == 'no':
+            player_action('play')
+        else:
+            print("Value Error: Enter YES or NO")
 
     return game_state
 
