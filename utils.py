@@ -17,9 +17,26 @@ keys = ['key door A', 'key door B', 'key door C', 'key door D']
 ################## DATA DICTs  ###############################################################
 ##############################################################################################
 
+# Each key in this dictionary represents a room; each value is a list of objects, doors and keys
+# Dictionary : GAME AREAS
+game_areas = {
+    "game room" : ['couch', 'piano', 'door A', 'key door A'],
+    "bedroom 1": ['queen bed', 'door A', 'door B', 'door C', 'key door B'],
+    "bedroom 2": ['double bed', 'door B', 'dresser', 'key door D', 'key door C'],
+    "living room": ["dining table", 'door C', 'door D'],
+    "outside": ["freedom"]
+}
 
+#############################################################################################
 
-
+# Keep track of the player : current space; current item to examine; and inventory of keys
+# Dict : GAME STATE
+game_state = {
+    'space_path' : [], # player current space to navigate and make a space path
+    'item_path' : [], # to select an item to examine for key; and make an item path
+    'inventory': [], # to store found keys
+    'time': ["display_clock_countdown"] , #library time for live timer and countdown
+}
 
 
 
@@ -158,27 +175,12 @@ def check(space, select_item, key):
     # action = player_input  
     # action = 'unlock door'
 # define Function : unlock_door(action, door, inventory, current_space)
-def unlock_door(action, current_space, door, inventory: list ):
-
-    # space = current_space
-    while (action == 'unlock door' and action != 'quit' and action != 'restart'): # While loop
-        if ('door A' in space) and ('door B' not in space) and ('door C' not in space) and ('door D' not in space):
-            space = 'game room'
-        elif ('door A' in space) and ('door B' in space) and ('door C' in space) and ('door D' not in space):
-            space = 'bedroom 1'
-        
-        elif ('door A' not in space) and ('door B' in space) and ('door C' not in space) and ('door D' not in space):
-            space = 'bedroom 2'
-        
-        elif ('door A' not in space) and ('door B' not in space) and ('door C' in space) and ('door D' in space):
-            space = 'living room'
-        
-        elif ('door A' not in space) and ('door B' not in space) and ('door C' not in space) and ('door D' in space):
-            space = 'outside'
-        else:
-            ("UNKNOWN SPACE in the system?")
+def unlock_door(action, space, door, inventory: list ):
+for i in game_areas:
     
-{space_doors}
+    if 'key door A' in game_state['inventory']:
+        unlock()
+
     print(f'You chose to unlock in {current_space} ')
         if door in space:
         door = input("Enter the door you want to try unlock : ").lower() # Player inputs space of choice
@@ -243,58 +245,9 @@ def navigate(space, door, inventory):
             else:
                 ("UNKNOWN SPACE in the system?")
             print(f'You are now in{space}')
+        update_space_path(space)
 
 
-
-
-################## UPDATE GAME STATE ######################################################
-game_state = {
-    'space_path': [],
-    'item_path': [],
-    'door_path': [],
-    'inventory': []
-    'time':["display_clock_countdown"]
-    }
-
-def update_inventory(key: str, space: str):
-    game_state["inventory"].append(key)
-    return game_state["inventory"]
-
-def update_game_state(door: str, key: str, item: str, space: str):
-    return None
-    
-    
-################## RESTART FUNCTION ######################################################
-
-def restart(answer: bool):
-    print("Restarting the game...")
-    reset_game_state()
-    continue
-
-################## PLAYER_INPUT = RESTART ######################################################
-
-def reset_game_state():
-    answer = input("Do you want to restart the game?").low()
-    while answer !='YES' and answer!='NO':
-        answer = input("To restart Enter only : YES or No").low()
-        if answer.low() == 'yes':
-            game_state["space_path"].append('game room')
-            game_state["item_path"].clear()
-            game_state["inventory"].clear()
-            game_state["door_path"].clear()
-        elif answer.low() == 'no':
-            player_action('play')
-        else:
-            print("Value Error: Enter YES or NO")
-
-    return game_state
-
-
-################## PLAYER_INPUT = QUIT ######################################################
-
-def quit():
-    print("Quitting the game...")
-    return None
 
 ################## GAME PATHS ######################################################
 
@@ -305,25 +258,83 @@ game_paths = {
     'door_path': [],
 }
 
+# update space path [game room, bedroom 1, bedroom 2...]
 def update_space_path(current_space:str):
     game_paths['space path'].append(current_space)
     return game_paths['space path']
 
+# update item path [couch, piano, queen bed...]
 def update_item_path(item:str):
     game_paths['item path'].append(item)
     return game_paths['item path']
 
-# update door path
+# update door path [door A, door B, door C, ...]
 def update_door_path(door:str):
     game_paths['door path'].append(door)
     return game_paths['door path']
 
-# update inventory
+# update inventory [key door A, key door B, key door C...]
 def update_inventory(key:str):
     game_paths['inventory'].append(key)
     return game_paths['inventory']
 
-# reset display_clock_countdown
+# display_clock_countdown
+
+################## UPDATE GAME STATE ######################################################
+game_state = {
+    'space_path': [],
+    'item_path': [],
+    'door_path': [],
+    'inventory': [],
+    'time':["display_clock_countdown"]
+    }
+
+def update_inventory(key: str, space: str):
+    game_state["inventory"].append(key)
+    return game_state["inventory"]
+
+def update_game_state(door: str, key: str, item: str, space: str):
+    update_space_path(space) #update space
+    update_item_path(item) #update item
+    update_door_path(door) #update door
+    update_inventory(key) #update key
+    display_clock_countdown() #run clock countdown
+
+    
+################## RESTART FUNCTION ######################################################
+
+def restart(answer: bool):
+    reset_game_state()
+    
+################## PLAYER_INPUT = RESTART ######################################################
+
+def reset_game_state():
+    answer = input("Do you want to restart the game? Enter: YES or NO")
+    while answer !='YES' and answer!='NO':
+        answer = input("To restart Enter only : YES or NO")
+    
+    if answer.low() == 'yes':
+        print("Restarting the game...")
+        game_state["space_path"].append('game room')
+        game_state["item_path"].clear()
+        game_state["inventory"].clear()
+        game_state["door_path"].clear()
+    elif answer.low() == 'no':
+        print("Continue to play...")
+        player_action('play')
+    else:
+        print("Value Error: Enter YES or NO")
+
+    return game_state
+
+
+################## PLAYER_INPUT = QUIT ######################################################
+
+def quit():
+    print("Quitting the game...")
+    return game_state
+
+
 
 ##########################################################################################################
 ################## EXTRA FEATURES CAN BE ADDED HERE ######################################################
