@@ -154,6 +154,45 @@ def check(space, select_item, key):
     return result
 
 ################## PLAYER_INPUT = UNLOCK DOOR  ######################################################
+    #player_input = 'unlock door'
+    # action = player_input  
+    # action = 'unlock door'
+# define Function : unlock_door(action, door, inventory, current_space)
+def unlock_door(action, current_space, door, inventory: list ):
+
+    # space = current_space
+    while (action == 'unlock door' and action != 'quit' and action != 'restart'): # While loop
+        if ('door A' in space) and ('door B' not in space) and ('door C' not in space) and ('door D' not in space):
+            space = 'game room'
+        elif ('door A' in space) and ('door B' in space) and ('door C' in space) and ('door D' not in space):
+            space = 'bedroom 1'
+        
+        elif ('door A' not in space) and ('door B' in space) and ('door C' not in space) and ('door D' not in space):
+            space = 'bedroom 2'
+        
+        elif ('door A' not in space) and ('door B' not in space) and ('door C' in space) and ('door D' in space):
+            space = 'living room'
+        
+        elif ('door A' not in space) and ('door B' not in space) and ('door C' not in space) and ('door D' in space):
+            space = 'outside'
+        else:
+            ("UNKNOWN SPACE in the system?")
+    
+{space_doors}
+    print(f'You chose to unlock in {current_space} ')
+        if door in space:
+        door = input("Enter the door you want to try unlock : ").lower() # Player inputs space of choice
+        
+        if door in doors:
+            print(f'Player chose to try unlock: {door}')
+
+            if key in inventory:
+                print(f"This key is already in your inventory !")
+                return True
+    quiz(door)
+    update_door_path(door)
+    
+    return game_state['door_path']
 
 ################## QUIZ FUNCTION  ######################################################
 def quiz(current_door):
@@ -175,38 +214,34 @@ def quiz(current_door):
     return player_action('play')
 # call function: quiz('door A')
 
-################## UNLOCK DOOR FUNCTION  ######################################################
-
-# define Function : unlock_door(action, door, inventory, current_space)
-def unlock_door(action: str, inventory: list, space: str):
-    #player_input = 'navigate'
-    #action = player_input
-    
-    print('Player is navigating to a new space!')
-    space_doors = []
-    while (action == 'navigate' and action != 'quit' and door != 'restart'): # While Loop
-        if 'door A' in space:
-            space ='game room'
-        
-        door = input(f'Choose from this list of doors in {space}: {space_doors}')
-        if door in space:
-        door = input("Enter the door you want to try unlock : ").lower() # Player inputs space of choice
-        
-        if door in doors:
-            print(f'Player chose to try unlock: {door}')
-
-            if key in inventory:
-                print(f"This key is already in your inventory !")
-                return True
-    update_door_path(door)
-    update_space_path(space)
-    return game_state['door_path']
-
 ################## PLAYER_INPUT = NAVIGATE  ######################################################
+print('Player is navigating to a new space!')
 
-def navigate(door, inventory):
+def navigate(space, door, inventory):
     print(f'Navigating through the {door}')
-    return "You moved forward"
+    # space is new_space
+    while (action == 'unlock door' and action != 'quit' and action != 'restart'): # While loop
+        if ('door A' in space) and ('door B' not in space) and ('door C' not in space) and ('door D' not in space):
+            update_space_path('game room')
+
+        elif ('door A' in space) and ('door B' in space) and ('door C' in space) and ('door D' not in space):
+            update_space_path('bedroom 1')
+        
+        elif ('door A' not in space) and ('door B' in space) and ('door C' not in space) and ('door D' not in space):
+            update_space_path('bedroom 2')
+        
+        elif ('door A' not in space) and ('door B' not in space) and ('door C' in space) and ('door D' in space):
+            update_space_path('living room')
+        
+        elif ('door A' not in space) and ('door B' not in space) and ('door C' not in space) and ('door D' in space):
+            update_space_path('outside')
+            print("FREEDOM | YOU WIN !")
+            print(game_state)
+            break
+        else:
+            ("UNKNOWN SPACE in the system?")
+        print(f'You are now in{space}')
+
 
 
 ################## UPDATE GAME STATE ######################################################
