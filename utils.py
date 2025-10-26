@@ -169,8 +169,9 @@ def check(space, select_item, key):
         print(f'You already have the key in your inventory {game_state["inventory"]}')  
         result=False
     return result
-
+#####################################################################################################
 ################## PLAYER_INPUT = UNLOCK DOOR  ######################################################
+#####################################################################################################
     #player_input = 'unlock door'
     # action = player_input  
     # action = 'unlock door'
